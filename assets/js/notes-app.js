@@ -1,7 +1,7 @@
 (() => {
   const SITE = window.SITE || {
     baseurl: "",
-    repo: "ChengzhuoSir/my-blog",
+    repo: "Poseforgecheng/my-blog",
     branch: "main",
     title: "科技笔记",
     author: "ChengzhuoSir",
@@ -481,7 +481,7 @@
     }
     if (response.status === 401) message = "令牌无效，请重新填写。";
     if (response.status === 403) message = "令牌没有这个仓库的写权限。";
-    if (response.status === 404) message = "找不到仓库或文件。确认令牌可以访问 ChengzhuoSir/my-blog。";
+    if (response.status === 404) message = "找不到仓库或文件。确认令牌可以访问 Poseforgecheng/my-blog。";
     return new Error(message);
   };
 

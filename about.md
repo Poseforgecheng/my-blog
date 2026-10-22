@@ -20,7 +20,7 @@ permalink: /about/
     </p>
     <p>
       笔记可以用 Markdown 或 Word 导入，也可以直接在网页里改。已发布的内容放在 GitHub 仓库
-      <a href="https://github.com/ChengzhuoSir/my-blog">ChengzhuoSir/my-blog</a>，构建后出现在公开页面。
+      <a href="https://github.com/Poseforgecheng/my-blog">Poseforgecheng/my-blog</a>，构建后出现在公开页面。
     </p>
     <p>想交流的话，可以通过 GitHub 找到我。</p>
   </div>

@@ -5,7 +5,7 @@ lang: zh-CN
 timezone: Asia/Shanghai
 
 # URL settings (update for custom domain)
-url: "https://chengzhuosir.github.io"
+url: "https://poseforgecheng.github.io"
 baseurl: "/my-blog"
 
 # Author
