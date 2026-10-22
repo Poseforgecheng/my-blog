@@ -1,0 +1,30 @@
+<aside class="zh-side">
+  <section class="zh-side-card">
+    <div class="zh-author-block">
+      <span class="zh-avatar zh-avatar-xl">{{ site.author.name | slice: 0, 1 }}</span>
+      <div>
+        <div class="zh-name">{{ site.author.name }}</div>
+        <div class="zh-meta">泊车 SLAM · 工作与学习笔记</div>
+      </div>
+    </div>
+    <p class="zh-side-bio">{{ site.author.bio }}</p>
+    <a class="zh-btn" href="{{ '/write/' | relative_url }}">写笔记</a>
+  </section>
+  <section class="zh-side-card">
+    <h3>关注话题</h3>
+    <div class="zh-topics-side">
+      <a href="{{ '/blog/' | relative_url }}?q={{ 'SLAM' | uri_escape }}">SLAM 开发</a>
+      <a href="{{ '/blog/' | relative_url }}?q={{ 'VLN' | uri_escape }}">VLN 学习记录</a>
+    </div>
+  </section>
+  {% if site.posts.size > 0 %}
+  <section class="zh-side-card">
+    <h3>最新笔记</h3>
+    <div class="zh-side-list">
+      {% for post in site.posts limit: 5 %}
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</aside>

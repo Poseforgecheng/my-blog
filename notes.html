@@ -1,0 +1,25 @@
+---
+layout: default
+title: 本机笔记
+permalink: /notes/
+description: "浏览器里导入的 Markdown 与 Word 笔记。"
+---
+
+<div id="notes-root">
+  <section class="zh-feed">
+    <div class="zh-tabs">
+      <a href="{{ '/blog/' | relative_url }}">已发布</a>
+      <a class="is-active" href="{{ '/notes/' | relative_url }}">本机笔记</a>
+      <a href="{{ '/write/' | relative_url }}">写笔记</a>
+    </div>
+    <div class="zh-drop-hint" id="notes-drop">
+      <strong>把 Markdown 或 Word 拖到这里</strong>
+      <span>松开后自动生成知乎风格笔记，也可以<button type="button" class="zh-link-btn" data-import>选择文件</button></span>
+    </div>
+    <p class="writer-status" id="notes-status"></p>
+    <div id="notes-list"></div>
+  </section>
+</div>
+<input id="file-input" type="file" multiple hidden accept=".md,.markdown,.docx,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+<div id="drop-mask" class="drop-mask" hidden>松开后自动生成笔记</div>
+<noscript><p class="zh-empty">开启浏览器脚本后，才能导入和打开本机笔记。</p></noscript>

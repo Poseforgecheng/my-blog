@@ -184,7 +184,7 @@ permalink: /games/snake/
       MAX_GEN_ATTEMPTS: 40,
 
       PORTAL_PAIRS: 2,
-      INIT_FOOD_COUNT: 3,
+      INIT_FOOD_COUNT: 6,
 
       SCORE_STEP: 8,
       ADD_CLUSTER_MIN: 2,
@@ -550,7 +550,17 @@ permalink: /games/snake/
 
     // ---------- food ----------
     function spawnFood() {
-      const type = Math.random() > 0.8 ? 'gold' : 'normal';
+      const rand = Math.random();
+      let type;
+      if (rand > 0.95) { // 5% chance for gold
+        type = 'gold';
+      } else if (rand > 0.9) { // 5% chance for shrink
+        type = 'shrink';
+      } else if (rand > 0.85) { // 5% chance for big
+        type = 'big';
+      } else { // 85% chance for normal
+        type = 'normal';
+      }
       const occ = buildOccupiedSet({ includeFoods: true });
 
       const cell = randomEmptyCell({
@@ -578,12 +588,27 @@ permalink: /games/snake/
         this.nextDir = startDir;
         this.score = 0;
         this.dead = false;
+        this.sizeMult = 1;
+        this.bigTimer = 0;
       }
 
       update() {
         if (this.dead) return;
 
+        // Big timer logic
+        if (this.bigTimer > 0) {
+            this.bigTimer--;
+            if (this.bigTimer <= 0) {
+                this.sizeMult = 1;
+            }
+        }
+
+        // Check for 180-degree turn (reversal)
+        if (this.nextDir.x === -this.dir.x && this.nextDir.y === -this.dir.y) {
+          this.body.reverse();
+        }
         this.dir = this.nextDir;
+        
         let head = {x: this.body[0].x + this.dir.x, y: this.body[0].y + this.dir.y};
 
         // portals
@@ -656,16 +681,27 @@ permalink: /games/snake/
 
         // eat
         let ate = false;
-        for (let i = 0; i < foods.length; i++) {
+        for (let i = foods.length - 1; i >= 0; i--) {
           const f = foods[i];
           if (head.x === f.x && head.y === f.y) {
-            this.score += (f.type === 'gold' ? 5 : 1);
+            ate = true;
+            const foodType = f.type;
             foods.splice(i, 1);
             spawnFood();
-            ate = true;
 
-            // 动态加障碍：吃到食物后触发
-            maybeIncreaseDifficulty();
+            if (foodType === 'shrink') {
+              this.score = Math.max(0, this.score - 2);
+              if (this.body.length > 3) this.body.pop();
+              if (this.body.length > 3) this.body.pop();
+            } else if (foodType === 'big') {
+               this.score += 2;
+               this.sizeMult = 1.5;
+               this.bigTimer = 150; // 30 seconds at 5fps
+               maybeIncreaseDifficulty();
+            } else { // normal or gold
+              this.score += (foodType === 'gold' ? 5 : 1);
+              maybeIncreaseDifficulty();
+            }
             break;
           }
         }
@@ -684,16 +720,78 @@ permalink: /games/snake/
       // if (p1.dead && (e.key.startsWith("Arrow"))) return;
       // if (p2.dead && ("wasdWASD".includes(e.key))) return;
 
-      if (e.key === 'ArrowUp' && p1.dir.y !== 1) p1.nextDir = {x: 0, y: -1};
-      if (e.key === 'ArrowDown' && p1.dir.y !== -1) p1.nextDir = {x: 0, y: 1};
-      if (e.key === 'ArrowLeft' && p1.dir.x !== 1) p1.nextDir = {x: -1, y: 0};
-      if (e.key === 'ArrowRight' && p1.dir.x !== -1) p1.nextDir = {x: 1, y: 0};
+      if (e.key === 'ArrowUp') p1.nextDir = {x: 0, y: -1};
+      if (e.key === 'ArrowDown') p1.nextDir = {x: 0, y: 1};
+      if (e.key === 'ArrowLeft') p1.nextDir = {x: -1, y: 0};
+      if (e.key === 'ArrowRight') p1.nextDir = {x: 1, y: 0};
 
-      if ((e.key === 'w' || e.key === 'W') && p2.dir.y !== 1) p2.nextDir = {x: 0, y: -1};
-      if ((e.key === 's' || e.key === 'S') && p2.dir.y !== -1) p2.nextDir = {x: 0, y: 1};
-      if ((e.key === 'a' || e.key === 'A') && p2.dir.x !== 1) p2.nextDir = {x: -1, y: 0};
-      if ((e.key === 'd' || e.key === 'D') && p2.dir.x !== -1) p2.nextDir = {x: 1, y: 0};
+      if ((e.key === 'w' || e.key === 'W')) p2.nextDir = {x: 0, y: -1};
+      if ((e.key === 's' || e.key === 'S')) p2.nextDir = {x: 0, y: 1};
+      if ((e.key === 'a' || e.key === 'A')) p2.nextDir = {x: -1, y: 0};
+      if ((e.key === 'd' || e.key === 'D')) p2.nextDir = {x: 1, y: 0};
     });
+
+    // ========== MOBILE TOUCH CONTROLS ==========
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    document.addEventListener('touchstart', e => {
+      // Prevent scrolling/zooming
+      if (e.target === canvas) {
+        e.preventDefault();
+      }
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    }, { passive: false });
+
+    document.addEventListener('touchend', e => {
+      if (e.target === canvas) {
+        e.preventDefault();
+      }
+      if (touchStartX === 0 && touchStartY === 0) return;
+
+      const touch = e.changedTouches[0];
+      const touchEndX = touch.clientX;
+      const touchEndY = touch.clientY;
+
+      handleSwipe(touchEndX, touchEndY);
+
+      // Reset start positions
+      touchStartX = 0;
+      touchStartY = 0;
+    }, { passive: false });
+
+    function handleSwipe(endX, endY) {
+        if (players.length < 2 || !isRunning) return;
+
+        const dx = endX - touchStartX;
+        const dy = endY - touchStartY;
+        const absDx = Math.abs(dx);
+        const absDy = Math.abs(dy);
+
+        // Ignore small taps
+        if (Math.max(absDx, absDy) < 30) return;
+
+        // Determine which player to control based on touch start position
+        const player = (touchStartX < window.innerWidth / 2) ? players[1] : players[0]; // P2 on left, P1 on right
+
+        if (!player) return;
+
+        if (absDx > absDy) { // Horizontal swipe
+            if (dx > 0) { // Right
+                player.nextDir = { x: 1, y: 0 };
+            } else { // Left
+                player.nextDir = { x: -1, y: 0 };
+            }
+        } else { // Vertical swipe
+            if (dy > 0) { // Down
+                player.nextDir = { x: 0, y: 1 };
+            } else { // Up
+                player.nextDir = { x: 0, y: -1 };
+            }
+        }
+    }
 
     // ---------- game control ----------
     function startGame() {
@@ -716,7 +814,7 @@ permalink: /games/snake/
       isRunning = true;
 
       if (gameInterval) clearInterval(gameInterval);
-      gameInterval = setInterval(gameLoop, 1000 / 12);
+      gameInterval = setInterval(gameLoop, 1000 / 5);
     }
 
     function resetGame() {
@@ -806,29 +904,105 @@ permalink: /games/snake/
 
       // foods
       for (let f of foods) {
+        let radius = gridSize / 1.7 * 1.5; // Increased by 0.5x (1.5x total)
+
         if (f.type === 'gold') {
           ctx.fillStyle = '#ffd700';
           ctx.shadowColor = '#ffd700';
           ctx.shadowBlur = 15;
+        } else if (f.type === 'shrink') {
+          ctx.fillStyle = '#99ff99';
+          ctx.shadowColor = '#99ff99';
+          ctx.shadowBlur = 10;
+        } else if (f.type === 'big') {
+          ctx.fillStyle = '#00ccff'; // Cyan/Blue for big
+          ctx.shadowColor = '#00ccff';
+          ctx.shadowBlur = 15;
+          radius *= 1.1; // Make big food slightly bigger visual
         } else {
           ctx.fillStyle = '#ff3333';
           ctx.shadowColor = '#ff3333';
           ctx.shadowBlur = 10;
         }
         ctx.beginPath();
-        ctx.arc(f.x * gridSize + gridSize/2, f.y * gridSize + gridSize/2, gridSize/3, 0, Math.PI*2);
+        ctx.arc(f.x * gridSize + gridSize/2, f.y * gridSize + gridSize/2, radius, 0, Math.PI*2);
         ctx.fill();
       }
       ctx.shadowBlur = 0;
 
       // snakes（死蛇画暗一点：降低shadow）
       players.forEach(p => {
+        const baseRadius = (gridSize / 2.1) * p.sizeMult;
+        const headRadius = (gridSize / 2 + 1) * p.sizeMult;
+
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = p.dead ? 2 : 10;
+        ctx.shadowBlur = p.dead ? 2 : 15;
 
-        for (let part of p.body) {
-          ctx.fillRect(part.x * gridSize + 1, part.y * gridSize + 1, gridSize - 2, gridSize - 2);
+        // Draw body
+        for (let i = 1; i < p.body.length; i++) {
+            const part = p.body[i];
+            const cx = part.x * gridSize + gridSize / 2;
+            const cy = part.y * gridSize + gridSize / 2;
+            
+            // Main body circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, baseRadius, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // Draw head
+        const head = p.body[0];
+        const hx = head.x * gridSize + gridSize / 2;
+        const hy = head.y * gridSize + gridSize / 2;
+        
+        ctx.beginPath();
+        ctx.arc(hx, hy, headRadius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Decorative Spine / Gradient for better look
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        for (let i = 1; i < p.body.length; i++) {
+            const part = p.body[i];
+            ctx.beginPath();
+            ctx.arc(part.x * gridSize + gridSize / 2, part.y * gridSize + gridSize / 2, baseRadius * 0.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+
+        // Draw eyes
+        if (!p.dead) {
+            const eyeSize = (gridSize / 5) * p.sizeMult;
+            const dir = p.dir;
+            
+            // Calculate eye positions relative to head center, rotated by direction
+            const eyeOffsetX = dir.y * gridSize * 0.25 * p.sizeMult;
+            const eyeOffsetY = dir.x * gridSize * 0.25 * p.sizeMult;
+            
+            ctx.fillStyle = '#fff'; // White part of the eye
+            
+            // Eye 1
+            ctx.beginPath();
+            ctx.arc(hx + eyeOffsetX, hy - eyeOffsetY, eyeSize, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Eye 2
+            ctx.beginPath();
+            ctx.arc(hx - eyeOffsetX, hy + eyeOffsetY, eyeSize, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#000'; // Pupil
+
+            // Pupil 1
+            ctx.beginPath();
+            ctx.arc(hx + eyeOffsetX + dir.x * eyeSize * 0.5, hy - eyeOffsetY + dir.y * eyeSize * 0.5, eyeSize / 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Pupil 2
+            ctx.beginPath();
+            ctx.arc(hx - eyeOffsetX + dir.x * eyeSize * 0.5, hy + eyeOffsetY + dir.y * eyeSize * 0.5, eyeSize / 2, 0, Math.PI * 2);
+            ctx.fill();
         }
       });
       ctx.shadowBlur = 0;

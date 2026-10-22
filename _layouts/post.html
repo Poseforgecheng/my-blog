@@ -2,23 +2,31 @@
 layout: default
 ---
 
-<article class="post">
-  <header class="post-header">
-    <p class="post-eyebrow">{{ page.date | date: '%Y.%m.%d' }}</p>
-    <h1 class="post-title">{{ page.title }}</h1>
-    {% if page.description %}
-    <p class="post-description">{{ page.description }}</p>
-    {% endif %}
-    {% if page.tags %}
-    <div class="post-tags">
-      {% for tag in page.tags %}
-      <span>#{{ tag }}</span>
-      {% endfor %}
+<article class="zh-article" data-source-path="{{ page.path }}" data-title="{{ page.title | escape }}">
+  <h1 class="zh-article-title">{{ page.title }}</h1>
+  <div class="zh-byline zh-byline-lg">
+    <span class="zh-avatar zh-avatar-lg">{{ site.author.name | slice: 0, 1 }}</span>
+    <div>
+      <div class="zh-name">{{ site.author.name }}</div>
+      <div class="zh-meta">
+        {{ page.date | date: "%Y-%m-%d" }}
+        {% if page.description %} · {{ page.description }}{% endif %}
+      </div>
     </div>
-    {% endif %}
-  </header>
-
-  <div class="post-content">
+  </div>
+  {% if page.tags %}
+  <div class="zh-topics">
+    {% for tag in page.tags %}
+    <a href="{{ '/blog/' | relative_url }}?q={{ tag | uri_escape }}">{{ tag }}</a>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="post-content zh-content">
     {{ content }}
+  </div>
+  <div class="zh-end-actions">
+    <button type="button" class="zh-agree" data-agree="{{ page.url }}">赞同</button>
+    <span data-edit-slot></span>
+    <a class="zh-text-link" href="{{ '/write/' | relative_url }}">写新笔记</a>
   </div>
 </article>

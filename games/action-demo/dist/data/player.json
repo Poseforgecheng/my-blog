@@ -1,0 +1,11 @@
+{
+    "movementSpeed": 200,
+    "jumpForce": 400,
+    "gravity": 800,
+    "dashSpeed": 500,
+    "dashDuration": 200,
+    "maxHealth": 100,
+    "comboWindow": 400,
+    "skillACooldown": 3000,
+    "skillBCooldown": 5000
+}

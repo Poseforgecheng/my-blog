@@ -1,0 +1,12 @@
+<svg width="32" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- The Staff Body -->
+  <rect x="8" y="0" width="16" height="200" fill="#D50000" stroke="#8E0000" stroke-width="2"/>
+  
+  <!-- Gold Ends -->
+  <rect x="6" y="0" width="20" height="30" fill="#FFD700" stroke="#E65100" stroke-width="2"/>
+  <rect x="6" y="170" width="20" height="30" fill="#FFD700" stroke="#E65100" stroke-width="2"/>
+  
+  <!-- Decorative Patterns -->
+  <path d="M10,40 L22,50 M10,50 L22,60 M10,60 L22,70" stroke="#B71C1C" stroke-width="2"/>
+  <path d="M10,140 L22,150 M10,150 L22,160 M10,160 L22,170" stroke="#B71C1C" stroke-width="2"/>
+</svg>

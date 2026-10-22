@@ -1,0 +1,18 @@
+<article class="zh-feed-card" data-search-item data-title="{{ post.title | escape }}">
+  <div class="zh-byline">
+    <span class="zh-avatar">{{ site.author.name | slice: 0, 1 }}</span>
+    <span class="zh-name">{{ site.author.name }}</span>
+    <span class="zh-meta">· {{ post.date | date: "%Y-%m-%d" }}</span>
+  </div>
+  <h2 class="zh-feed-title">
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+  </h2>
+  <p class="zh-excerpt">{{ post.description | default: post.excerpt | strip_html | truncate: 120 }}</p>
+  <div class="zh-feed-actions">
+    <button type="button" class="zh-agree zh-agree-sm" data-agree="{{ post.url }}">赞同</button>
+    <a href="{{ post.url | relative_url }}">阅读全文</a>
+    {% for tag in post.tags limit: 3 %}
+    <a href="{{ '/blog/' | relative_url }}?q={{ tag | uri_escape }}">{{ tag }}</a>
+    {% endfor %}
+  </div>
+</article>

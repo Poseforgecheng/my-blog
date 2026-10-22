@@ -1,0 +1,57 @@
+---
+layout: editor
+title: 写笔记
+permalink: /write/
+description: "在网页里写笔记，或导入 Markdown 与 Word。"
+---
+
+<div class="writer" id="writer">
+  <header class="zh-write-bar">
+    <a class="zh-logo" href="{{ '/' | relative_url }}">
+      <span class="zh-logo-mark">C</span>
+      <span>科技笔记</span>
+    </a>
+    <span class="zh-write-label">写笔记</span>
+    <div class="zh-write-actions">
+      <button type="button" class="zh-btn-text" data-import title="导入 Markdown 或 Word">导入</button>
+      <button type="button" class="zh-btn-text" id="import-dir" title="读取文件夹里的 .md 和 .docx">文件夹</button>
+      <button type="button" class="zh-btn-text" id="sync-repo" title="从 GitHub 载入已发布的 Markdown">同步</button>
+      <button type="button" class="zh-btn-text" id="toggle-mode">预览</button>
+      <button type="button" class="zh-btn-text" id="download-note">下载</button>
+      <button type="button" class="zh-btn zh-btn-plain" id="token-settings">设置</button>
+      <button type="button" class="zh-btn" id="publish-note">发布</button>
+    </div>
+  </header>
+  <div class="writer-frame">
+    <aside class="writer-library" id="writer-library" aria-label="笔记列表"></aside>
+    <div class="writer-main">
+      <div class="writer-sheet" id="writer-sheet">
+        <p class="writer-status" id="writer-status">拖入 .md 或 .docx，自动生成笔记。站内 Markdown 会载入到左侧。</p>
+        <input id="note-title" class="writer-title" maxlength="100" placeholder="请输入标题" aria-label="标题" />
+        <input id="note-tags" class="writer-tags" placeholder="话题，用逗号分隔" aria-label="话题" />
+        <textarea id="note-body" class="writer-text" placeholder="请输入正文，支持 Markdown。把 .md 或 .docx 拖到页面上，会自动变成笔记。"></textarea>
+        <div id="note-visual" class="zh-content writer-visual" hidden contenteditable="true" aria-label="正文"></div>
+        <div id="note-preview" class="writer-preview" hidden></div>
+      </div>
+    </div>
+  </div>
+  <input id="file-input" type="file" multiple hidden accept=".md,.markdown,.docx,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+  <div id="drop-mask" class="drop-mask" hidden>松开后自动生成笔记</div>
+  <div id="publish-dialog" class="zh-modal" hidden>
+    <div class="zh-dialog" role="dialog" aria-labelledby="publish-title">
+      <h2 id="publish-title">发布到网站</h2>
+      <p>令牌只保存在这台浏览器，不会写进仓库。需要 ChengzhuoSir/my-blog 的 Contents 写权限。这个仓库是公开的，发布后的笔记也会公开。Pages 构建完成后，首页就能看到。</p>
+      <label for="github-token">GitHub 令牌</label>
+      <input id="github-token" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_ 或 ghp_" />
+      <p class="zh-dialog-links">
+        <a href="https://github.com/settings/tokens/new?scopes=public_repo&amp;description=chengzhi-notes" target="_blank" rel="noreferrer">创建令牌</a>
+      </p>
+      <div class="zh-dialog-actions">
+        <button type="button" class="zh-btn-text" id="token-clear">清除</button>
+        <button type="button" class="zh-btn zh-btn-plain" id="token-cancel">取消</button>
+        <button type="button" class="zh-btn" id="token-save">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+<noscript><p class="zh-empty">开启浏览器脚本后，才能在网页里写笔记和导入文件。</p></noscript>

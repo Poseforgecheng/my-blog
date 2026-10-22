@@ -1,0 +1,22 @@
+<script>
+  window.SITE = {
+    baseurl: {{ site.baseurl | jsonify }},
+    repo: "ChengzhuoSir/my-blog",
+    branch: "main",
+    title: {{ site.title | jsonify }},
+    author: {{ site.author.name | jsonify }}
+  };
+  window.MathJax = {
+    tex: {
+      inlineMath: [["$", "$"], ["\\(", "\\)"]],
+      displayMath: [["$$", "$$"], ["\\[", "\\]"]]
+    },
+    options: {
+      skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+    }
+  };
+</script>
+<script defer src="{{ '/assets/vendor/mathjax/es5/tex-mml-chtml.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/vendor/mermaid/mermaid.min.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/site.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/notes-app.js' | relative_url }}"></script>

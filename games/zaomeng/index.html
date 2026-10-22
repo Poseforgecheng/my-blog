@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>造梦西游 - 网页复刻版</title>
+    <style>
+        :root {
+            --page-top: #0c1324;
+            --page-mid: #1c2232;
+            --page-bottom: #272a30;
+            --frame-edge: #c8ab72;
+            --frame-inner: #3c2f1d;
+            --text-main: #f4ead8;
+            --text-sub: #c7b89f;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background:
+                radial-gradient(circle at 18% 12%, rgba(255, 194, 116, 0.18), transparent 34%),
+                radial-gradient(circle at 84% 76%, rgba(116, 168, 255, 0.16), transparent 38%),
+                linear-gradient(180deg, var(--page-top), var(--page-mid) 45%, var(--page-bottom));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--text-main);
+            font-family: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+            overflow: hidden;
+        }
+
+        .stage-shell {
+            width: min(96vw, 1180px);
+            padding: 14px 16px 10px;
+            border-radius: 16px;
+            background: linear-gradient(180deg, rgba(18, 21, 29, 0.9), rgba(9, 11, 16, 0.9));
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.42),
+                inset 0 0 0 1px rgba(255, 234, 196, 0.08);
+        }
+
+        #game-container {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 3px solid var(--frame-edge);
+            box-shadow:
+                0 12px 22px rgba(0, 0, 0, 0.45),
+                inset 0 0 0 2px var(--frame-inner);
+        }
+
+        canvas {
+            display: block;
+            width: min(95vw, 1100px);
+            height: auto;
+            background-color: #0d1528;
+        }
+
+        #game-container::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 14%, transparent 86%, rgba(0, 0, 0, 0.25)),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.24), transparent 16%, transparent 84%, rgba(0, 0, 0, 0.3));
+        }
+
+        .controls {
+            margin-top: 10px;
+            text-align: center;
+            color: var(--text-sub);
+            letter-spacing: 0.4px;
+            font-size: 20px;
+            line-height: 1.4;
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+        }
+
+        .controls p {
+            margin: 0;
+            font-size: clamp(15px, 1.55vw, 24px);
+        }
+
+        @media (max-width: 768px) {
+            .stage-shell {
+                width: 100vw;
+                border-radius: 0;
+                padding: 8px 8px 10px;
+            }
+
+            #game-container {
+                border-width: 2px;
+                border-radius: 8px;
+            }
+
+            .controls {
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stage-shell">
+        <div id="game-container">
+            <canvas id="gameCanvas" width="1100" height="580"></canvas>
+        </div>
+        <div class="controls">
+            <p>操作说明: ← → 移动 | ↑ 跳跃 | Space 攻击 | R 重置</p>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

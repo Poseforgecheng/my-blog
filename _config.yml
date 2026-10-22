@@ -1,6 +1,6 @@
 # Site settings
 title: "ChengzhuoSir 的科技笔记"
-description: "记录技术、产品与创作。"
+description: "ChengzhuoSir 的科技笔记，记录工作与学习。"
 lang: zh-CN
 timezone: Asia/Shanghai
 
@@ -24,3 +24,17 @@ permalink: /blog/:year/:month/:day/:title/
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - artifacts
+  - tools
+  - zaomeng_demo-master
+  - node_modules
+  - games/action-demo/node_modules
+  - games/action-demo/src
+  - games/action-demo/tsconfig.json
+  - games/action-demo/vite.config.ts
+  - games/action-demo/package.json
+  - games/action-demo/package-lock.json

@@ -1,0 +1,28 @@
+{
+    "melee": {
+        "hp": 50,
+        "speed": 100,
+        "damage": 10,
+        "attackRange": 40,
+        "detectRange": 200,
+        "attackCooldown": 1000
+    },
+    "ranged": {
+        "hp": 30,
+        "speed": 80,
+        "damage": 5,
+        "attackRange": 300,
+        "detectRange": 400,
+        "fleeRange": 100,
+        "attackCooldown": 2000
+    },
+    "jumper": {
+        "hp": 60,
+        "speed": 120,
+        "damage": 15,
+        "attackRange": 60,
+        "detectRange": 250,
+        "jumpForce": 500,
+        "attackCooldown": 3000
+    }
+}

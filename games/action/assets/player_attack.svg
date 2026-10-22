@@ -1,0 +1,32 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Cape (Flying high back) -->
+  <path d="M5,10 Q25,5 15,30 L35,25 Z" fill="#FF1744" stroke="#D50000" stroke-width="1"/>
+  
+  <!-- Staff (Swung Forward - Diagonal) -->
+  <!-- Handle -->
+  <line x1="20" y1="20" x2="60" y2="50" stroke="#FF1744" stroke-width="6" stroke-linecap="round"/>
+  <!-- Gold Tips -->
+  <line x1="20" y1="20" x2="25" y2="24" stroke="#FFD700" stroke-width="6" stroke-linecap="round"/>
+  <line x1="55" y1="46" x2="60" y2="50" stroke="#FFD700" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Legs (Lunging) -->
+  <rect x="25" y="45" width="8" height="15" transform="rotate(15 29 52)" fill="#2962FF"/> <!-- Back Leg -->
+  <rect x="45" y="45" width="8" height="15" transform="rotate(-15 49 52)" fill="#2962FF"/> <!-- Front Leg -->
+  
+  <!-- Body (Leaning Forward) -->
+  <rect x="28" y="28" width="28" height="20" rx="3" transform="rotate(10 42 38)" fill="#FFD700" stroke="#E65100" stroke-width="2"/>
+
+  <!-- Head (Angled) -->
+  <g transform="translate(4, 2)">
+      <circle cx="32" cy="16" r="12" fill="#D7CCC8"/>
+      <ellipse cx="32" cy="18" rx="8" ry="6" fill="#FFAB91"/>
+      <!-- Angry Eyes -->
+      <path d="M28,14 L31,16" stroke="#000" stroke-width="1"/>
+      <path d="M36,14 L33,16" stroke="#000" stroke-width="1"/>
+      <circle cx="29" cy="17" r="2" fill="#000"/>
+      <circle cx="35" cy="17" r="2" fill="#000"/>
+      
+      <!-- Circlet -->
+      <path d="M20,12 Q32,4 44,12" stroke="#FFFF00" stroke-width="3" fill="none"/>
+  </g>
+</svg>

@@ -1,20 +1,22 @@
 ---
 layout: default
-title: 博客
-description: "技术与创作日志。"
+title: 笔记
+description: "按时间排列的笔记。"
 ---
 
-<section class="section" data-reveal>
-  <h2>全部文章</h2>
-  <p>按时间倒序记录技术实践、工具与思考。</p>
-  <div class="blog-list">
-    {% for post in site.posts %}
-    <div class="blog-item">
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      <div class="blog-meta">
-        {{ post.date | date: '%Y.%m.%d' }} · {{ post.description | default: '持续更新中' }}
-      </div>
-    </div>
-    {% endfor %}
+<section class="zh-feed">
+  <div class="zh-tabs">
+    <a class="is-active" href="{{ '/blog/' | relative_url }}">已发布</a>
+    <a href="{{ '/notes/' | relative_url }}">本机笔记</a>
+    <a href="{{ '/write/' | relative_url }}">写笔记</a>
   </div>
+  <p class="zh-search-label" data-search-label hidden></p>
+  <div id="local-feed" data-local-feed></div>
+  {% for post in site.posts %}
+    {% include feed_card.html %}
+  {% endfor %}
+  {% if site.posts.size == 0 %}
+  <p class="zh-empty">还没有公开笔记。</p>
+  {% endif %}
+  <p class="zh-end">没有更多了</p>
 </section>

@@ -1,3 +1,7 @@
 _site/
 .jekyll-cache/
 .bundle/
+artifacts/
+node_modules/
+tmp/
+__pycache__/

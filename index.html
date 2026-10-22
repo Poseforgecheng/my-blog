@@ -1,55 +1,22 @@
 ---
 layout: default
 title: 首页
-description: "科技感个人主页与博客。"
+description: "ChengzhuoSir 的科技笔记。"
 ---
 
-<section class="hero" data-reveal>
-  <h1>用工程视角记录未来的细节</h1>
-  <p>
-    这里是 ChengzhuoSir 的个人站点，一个搞泊车 SLAM 的员工。
-    整理日常的工作和学习笔记，分享技术见解与工程经验。
-  </p>
-  <div class="focus-row">
-    <span class="focus-label">正在关注</span>
-    <span class="focus-pill">SLAM 开发</span>
-    <span class="focus-pill">VLN 学习记录</span>
+<section class="zh-feed">
+  <div class="zh-tabs">
+    <a class="is-active" href="{{ '/' | relative_url }}">最新</a>
+    <a href="{{ '/blog/' | relative_url }}">全部笔记</a>
+    <a href="{{ '/notes/' | relative_url }}">本机笔记</a>
   </div>
-  <div class="hero-actions">
-    <a class="button" href="{{ '/blog/' | relative_url }}">阅读最新文章</a>
-    <a class="button secondary" href="{{ '/games/' | relative_url }}">进入游戏</a>
-    <a class="button secondary" href="{{ '/about/' | relative_url }}">了解更多</a>
-  </div>
-  <div class="section-grid hero-grid">
-    <div class="card">
-      <h3>系统化工程实践</h3>
-      <p>聚焦可维护的架构、自动化流程与可观测性。</p>
-    </div>
-    <div class="card">
-      <h3>产品与体验</h3>
-      <p>记录用户路径、交互细节与体验指标的实验。</p>
-    </div>
-    <div class="card">
-      <h3>科技美学探索</h3>
-      <p>关注内容叙事、视觉语言与表达的一致性。</p>
-    </div>
-  </div>
-</section>
-
-<section class="section" data-reveal>
-  <h2>最新文章</h2>
-  <div class="blog-list">
-    {% if site.posts.size > 0 %}
-      {% for post in site.posts limit: 3 %}
-      <div class="blog-item">
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        <div class="blog-meta">
-          {{ post.date | date: '%Y.%m.%d' }} · {{ post.description | default: '持续更新中' }}
-        </div>
-      </div>
-      {% endfor %}
-    {% else %}
-      <div class="blog-item">第一篇文章正在路上，敬请期待。</div>
-    {% endif %}
-  </div>
+  <p class="zh-search-label" data-search-label hidden></p>
+  <div id="local-feed" data-local-feed></div>
+  {% for post in site.posts limit: 10 %}
+    {% include feed_card.html %}
+  {% endfor %}
+  {% if site.posts.size == 0 %}
+  <p class="zh-empty">还没有公开笔记。可以先写一篇，或导入 Markdown / Word。</p>
+  {% endif %}
+  <p class="zh-end">没有更多了</p>
 </section>
